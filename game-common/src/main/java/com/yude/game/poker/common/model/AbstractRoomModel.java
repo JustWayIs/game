@@ -1,4 +1,4 @@
-package com.yude.game.poker.common.mode;
+package com.yude.game.poker.common.model;
 
 
 import com.yude.game.poker.common.constant.PlayerStatusEnum;

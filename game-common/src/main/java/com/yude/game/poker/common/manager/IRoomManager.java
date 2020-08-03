@@ -1,8 +1,8 @@
 package com.yude.game.poker.common.manager;
 
 import com.yude.game.poker.common.constant.Status;
-import com.yude.game.poker.common.mode.AbstractRoomModel;
-import com.yude.game.poker.common.mode.Player;
+import com.yude.game.poker.common.model.AbstractRoomModel;
+import com.yude.game.poker.common.model.Player;
 
 import java.util.concurrent.ExecutorService;
 

@@ -1,7 +1,6 @@
-package com.yude.game.poker.common.mode;
+package com.yude.game.poker.common.model;
 
 import com.yude.game.poker.common.exception.BizException;
-import com.yude.game.poker.common.mode.AbstractSeatModel;
 
 /**
  * @Author: HH

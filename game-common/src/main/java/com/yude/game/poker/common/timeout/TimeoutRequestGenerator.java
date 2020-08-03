@@ -1,7 +1,7 @@
 package com.yude.game.poker.common.timeout;
 
 import com.yude.game.poker.common.constant.Status;
-import com.yude.game.poker.common.mode.AbstractRoomModel;
+import com.yude.game.poker.common.model.AbstractRoomModel;
 import com.yude.protocol.common.request.Request;
 
 import java.util.Optional;

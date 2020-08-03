@@ -1,7 +1,7 @@
 package com.yude.game.poker.common.timeout;
 
 import com.yude.game.poker.common.manager.IPushManager;
-import com.yude.game.poker.common.mode.AbstractRoomModel;
+import com.yude.game.poker.common.model.AbstractRoomModel;
 
 import java.util.concurrent.Delayed;
 

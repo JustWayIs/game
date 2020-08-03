@@ -1,4 +1,4 @@
-package com.yude.game.poker.common.mode;
+package com.yude.game.poker.common.model;
 
 /**
  * @Author: HH
