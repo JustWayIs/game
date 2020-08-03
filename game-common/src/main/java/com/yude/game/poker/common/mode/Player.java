@@ -1,4 +1,4 @@
-package com.yude.game.poker.common.mode.seat;
+package com.yude.game.poker.common.mode;
 
 import com.yude.game.poker.common.constant.Status;
 

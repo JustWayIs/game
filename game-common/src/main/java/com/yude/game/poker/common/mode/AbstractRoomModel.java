@@ -3,9 +3,6 @@ package com.yude.game.poker.common.mode;
 
 import com.yude.game.poker.common.constant.PlayerStatusEnum;
 import com.yude.game.poker.common.manager.IRoomManager;
-import com.yude.game.poker.common.mode.seat.AbstractSeatModel;
-import com.yude.game.poker.common.mode.seat.Player;
-import com.yude.game.poker.common.mode.table.AbstractGameZoneModel;
 import com.yude.game.poker.common.timeout.TimeoutTaskPool;
 
 import java.util.HashMap;

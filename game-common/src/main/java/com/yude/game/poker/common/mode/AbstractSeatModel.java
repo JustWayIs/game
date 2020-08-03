@@ -1,4 +1,4 @@
-package com.yude.game.poker.common.mode.seat;
+package com.yude.game.poker.common.mode;
 
 /**
  * @Author: HH
@@ -9,6 +9,10 @@ package com.yude.game.poker.common.mode.seat;
 public abstract class AbstractSeatModel {
     protected Player player;
     protected int posId;
+    /**
+     * 是否托管
+     */
+    protected boolean isAutoOperation = false;
 
 
     public AbstractSeatModel(Player player, int posId) {
@@ -39,5 +43,14 @@ public abstract class AbstractSeatModel {
 
     public Long getUserId(){
         return player.getUserId();
+    }
+
+    public boolean isAutoOperation() {
+        return isAutoOperation;
+    }
+
+    public AbstractSeatModel setAutoOperation(boolean autoOperation) {
+        isAutoOperation = autoOperation;
+        return this;
     }
 }
