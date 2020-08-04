@@ -2,6 +2,7 @@ package com.yude.game.common.model;
 
 
 import com.yude.game.common.constant.PlayerStatusEnum;
+import com.yude.game.common.constant.Status;
 import com.yude.game.common.manager.IRoomManager;
 import com.yude.game.common.timeout.TimeoutTaskPool;
 
@@ -70,10 +71,45 @@ public abstract class AbstractRoomModel<T extends AbstractGameZoneModel, R exten
     }
 
 
+    //===========timeout==================
+    public int getStep() {
+        return gameZone.getStepCount();
+    }
+
+    public Long getRoomId() {
+        return roomId;
+    }
+
+    public Status getGameStatus(){return gameZone.getGameStatus();}
+
+    public T getGameZone(){
+        return gameZone;
+    }
+
+    /**
+     * 返回克隆的数据
+     * @return
+     * @throws CloneNotSupportedException
+     */
+    public abstract AbstractRoomModel cloneData() throws CloneNotSupportedException;
+
+    /**
+     * 一次只能有一个线程修改
+     *
+     * @param userId
+     */
+    public void userSerialTimeoutCountAdd(Long userId) {
+        Integer posId = userPosIdMap.get(userId);
+        AbstractSeatModel seat = posIdSeatMap.get(posId);
+        seat.serialTimeoutCountAdd(getTimeoutLimit());
+    }
+    //=======================================
 
     public abstract R getPracticalSeatModle(Player player, int posId);
 
     public abstract T getPracticalGameZoneModel();
 
     public abstract void startGame();
+
+    public abstract int getTimeoutLimit();
 }

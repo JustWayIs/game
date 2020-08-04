@@ -1,5 +1,6 @@
 package com.yude.game.common.model;
 
+import com.yude.game.common.constant.Status;
 import com.yude.game.common.exception.BizException;
 
 /**
@@ -8,7 +9,7 @@ import com.yude.game.common.exception.BizException;
  * @Version: 1.0
  * @Declare:
  */
-public abstract class AbstractGameZoneModel<T extends AbstractSeatModel>{
+public abstract class AbstractGameZoneModel<T extends AbstractSeatModel,S extends Status>{
 
 
     //聚合关系 : 游戏结束要解除这个关联关系
@@ -22,6 +23,8 @@ public abstract class AbstractGameZoneModel<T extends AbstractSeatModel>{
     protected int inning;
 
     protected volatile int stepCount;
+
+    protected S gameStatus;
 
     public AbstractGameZoneModel(T[] playerSeats,int round,int inning) {
         this.playerSeats = playerSeats;
@@ -63,8 +66,7 @@ public abstract class AbstractGameZoneModel<T extends AbstractSeatModel>{
         return stepCount;
     }
 
-
-
-
-
+    public S getGameStatus(){
+        return gameStatus;
+    }
 }

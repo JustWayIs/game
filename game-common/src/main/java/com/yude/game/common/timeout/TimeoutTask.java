@@ -11,7 +11,7 @@ import java.util.concurrent.Delayed;
  * @Version: 1.0
  * @Declare: 超时任务框架中所有对象用到的所有属性都要用volatile修饰,不允许修改任何值
  */
-public interface TimeoutTask<T extends AbstractRoomModel,P extends IPushManager> extends Runnable, Delayed {
+public interface TimeoutTask extends Runnable, Delayed {
 
     /**
      * 延时后需要执行的任务

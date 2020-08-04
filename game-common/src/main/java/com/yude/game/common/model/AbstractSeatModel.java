@@ -13,6 +13,7 @@ public abstract class AbstractSeatModel {
      * 是否托管
      */
     protected boolean isAutoOperation = false;
+    protected volatile int serialTimeoutCount = 0;
 
 
     public AbstractSeatModel(Player player, int posId) {
@@ -47,6 +48,13 @@ public abstract class AbstractSeatModel {
 
     public boolean isAutoOperation() {
         return isAutoOperation;
+    }
+
+    public void serialTimeoutCountAdd(int limit) {
+        serialTimeoutCount++;
+        if (serialTimeoutCount > limit) {
+
+        }
     }
 
     public AbstractSeatModel setAutoOperation(boolean autoOperation) {
