@@ -9,6 +9,8 @@ import com.yude.game.common.dispatcher.event.MessageReceiveEvent;
 import com.yude.game.common.dispatcher.event.factory.threadFactory.CustomDisruptorThreadFactory;
 import com.yude.game.common.dispatcher.event.translator.ReceiveMessageEventProducer;
 import com.yude.protocol.common.MessageType;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -22,10 +24,13 @@ import java.util.concurrent.ThreadFactory;
  * @Declare: 非线程安全的：只用于启动初始化
  */
 @Component
+@PropertySource("classpath:config/core.properties")
 public class ServiceDisruptor implements EventDisruptor {
     //H2 可以通过配置文件设置
+    @Value("${disruptor.size.service:2}")
     private int disruptorNum = 2;//Runtime.getRuntime().availableProcessors()-2;
 
+    @Value("${disruptor.bufferSize.service:1024}")
     private int bufferSize = 2 << 13;
 
     @Resource(name="messageReceiveEventHandler")

@@ -9,6 +9,8 @@ import com.yude.game.common.dispatcher.event.MessagePushEvent;
 import com.yude.game.common.dispatcher.event.factory.threadFactory.CustomDisruptorThreadFactory;
 import com.yude.game.common.dispatcher.event.translator.PushMessageEventProducer;
 import com.yude.protocol.common.MessageType;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -22,10 +24,13 @@ import java.util.concurrent.ThreadFactory;
  * @Declare:
  */
 @Component
+@PropertySource("classpath:config/core.properties")
 public class PushMessageDisruptor implements EventDisruptor {
     //H2 可以通过配置文件设置
+    @Value("${disruptor.size.push:4}")
     private int disruptorNum = 6;
 
+    @Value("${disruptor.bufferSize.push:1024}")
     private int bufferSize = 2 << 13;
 
     @Resource(name="messagePushEventHandler")

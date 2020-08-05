@@ -9,6 +9,8 @@ import com.yude.game.common.dispatcher.event.factory.threadFactory.CustomDisrupt
 import com.yude.game.common.dispatcher.event.translator.ReceiveMessageEventProducer;
 import com.yude.game.communication.dispatcher.IProducerWithTranslator;
 import com.yude.protocol.common.MessageType;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 
@@ -23,10 +25,13 @@ import java.util.concurrent.ThreadFactory;
  * @Declare:
  */
 @Component
+@PropertySource("classpath:config/core.properties")
 public class LoginDisruptor implements EventDisruptor {
+    @Value("${disruptor.size.login:1}")
     private final int disruptorNum = 1;
 
-    private final int bufferSize = 2 << 14;
+    @Value("${disruptor.bufferSize.login:1024}")
+    private final int bufferSize = 2 << 13;
 
     /*@Autowired()
     @Qualifier("messageReceiveEventHandler")*/
