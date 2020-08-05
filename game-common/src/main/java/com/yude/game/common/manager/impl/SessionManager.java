@@ -99,7 +99,7 @@ public class SessionManager implements ISessionManager {
         sessionMap.put(sessionId, session);
         userSessionMap.put(userId, sessionId);
 
-        //H2 这种机制看起来似乎做的是与成员变量的map中相同的事。
+        //其意义在于如果能拿到当前channel就可以直接获得userId,sessionId
         Attribute<Long> attr = context.channel().attr(USER_ID);
         attr.set(userId);
         Attribute<String> sessionAttr = context.channel().attr(SESSION_ID);

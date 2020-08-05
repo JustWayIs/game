@@ -26,9 +26,9 @@ import java.util.concurrent.ThreadFactory;
 @Component
 @PropertySource("classpath:config/core.properties")
 public class ServiceDisruptor implements EventDisruptor {
-    //H2 可以通过配置文件设置
+
     @Value("${disruptor.size.service:2}")
-    private int disruptorNum = 2;//Runtime.getRuntime().availableProcessors()-2;
+    private int disruptorNum = 2;
 
     @Value("${disruptor.bufferSize.service:1024}")
     private int bufferSize = 2 << 13;

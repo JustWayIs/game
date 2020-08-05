@@ -63,7 +63,7 @@ public class MessageReceiveEventHandler implements EventHandler<MessageReceiveEv
             Class<? extends Request>[] paramTypes = handlerMethod.getParamTypes();
             Object result;
             Request request = null;
-            //H2 考虑无参的情况 if(paramTypes.length > 0){}
+            // 考虑无参的情况
             if (paramTypes.length > 0) {
                 Class<? extends Request> requestType = paramTypes[0];
                  request = message.getObject().unpack(requestType);
@@ -105,7 +105,7 @@ public class MessageReceiveEventHandler implements EventHandler<MessageReceiveEv
         }catch (InvocationTargetException e){
             Throwable targetException = e.getTargetException();
             /**
-             * H2 标注注释：业务处理过程中，如果出现异常可以手动抛出两种自定义异常，会在这里统一对客户端进行响应
+             * 标注注释：业务处理过程中，如果出现异常可以手动抛出两种自定义异常，会在这里统一对客户端进行响应
              */
             if(targetException instanceof BizException){
                 log.warn("业务处理异常：{}",event, targetException);

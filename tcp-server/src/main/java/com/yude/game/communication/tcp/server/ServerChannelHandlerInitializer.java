@@ -50,7 +50,6 @@ public class ServerChannelHandlerInitializer extends ChannelInitializer<SocketCh
     @Override
     protected void initChannel(SocketChannel channel) throws Exception {
         ChannelPipeline pipeline = channel.pipeline();
-        //H2: 还需要添加编解码器等等 hanler
         
         //TCP传输报文信息日志
         //pipeline.addLast("messageLog",new LoggingHandler(LogLevel.DEBUG));
@@ -72,13 +71,13 @@ public class ServerChannelHandlerInitializer extends ChannelInitializer<SocketCh
         //超时检测：不会抛出异常，会触发一个事件，需要手动关闭channel
         //pipeline.addLast("read-time-out",new IdleStateHandler(0,0,TIME_OUT * 3, TimeUnit.SECONDS));
         
-        //H2: 登录业务handler  登录-鉴权 的应答  
+        //登录业务handler  登录-鉴权 的应答
         pipeline.addLast("authUserHandler",loginHandler);
         
-       //H2: 心跳应答
+       //心跳应答
         pipeline.addLast(heartBeathandler);
         
-        //H2: 服务端业务处理
+        //服务端业务处理
         pipeline.addLast("serviceHandler",tcpCoreHandler);
     }
 }

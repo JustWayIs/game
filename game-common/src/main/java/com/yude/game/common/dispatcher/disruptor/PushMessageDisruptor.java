@@ -26,7 +26,7 @@ import java.util.concurrent.ThreadFactory;
 @Component
 @PropertySource("classpath:config/core.properties")
 public class PushMessageDisruptor implements EventDisruptor {
-    //H2 可以通过配置文件设置
+
     @Value("${disruptor.size.push:4}")
     private int disruptorNum = 6;
 

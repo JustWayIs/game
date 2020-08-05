@@ -112,9 +112,7 @@ public class LoginRespHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         log.error("发生了异常事件：", cause);//比如ReadTimeoutHandler就会抛出异常,并且自动关闭channel
-        //H2 正常解析后可以考虑去掉，上面有finally
-        // ctx.channel().close();
-        //.....
+
         if (cause instanceof ReadTimeoutException) {
             sessionManager.removeSession(ctx.channel().attr(ISessionManager.USER_ID).get());
             return;

@@ -76,7 +76,7 @@ public class LoginEventHandler implements EventHandler<MessageReceiveEvent> ,Com
                if (response.isSuccess()) {
 
                     log.info("用户验证成功，添加超时handler : userId={}",context.channel().attr(SessionManager.USER_ID).get());
-                    //H2 加在之前还是之后还要先明确authUserHandler的职责 -> 在这里加的话，得加到管道头部，否则不生效
+                    //心跳机制应该在登录校验完成后才有意义 -> 在这里加的话，得加到管道头部，否则不生效
                    context.pipeline().addFirst("read-time-out",new IdleStateHandler(0,0, ServerChannelHandlerInitializer.TIME_OUT * 3, TimeUnit.SECONDS));
                    log.debug("------------pipeline: {}  ",context.pipeline());
                 }

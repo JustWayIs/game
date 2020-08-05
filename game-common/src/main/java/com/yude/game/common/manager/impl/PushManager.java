@@ -40,8 +40,8 @@ public class PushManager implements IPushManager {
 
 
     @Override
-    public void pushToUser(int command,Long userId, Response response,Long... roomId) {
-        log.info("推送数据：roomId={} command={}  userId={}  response={}",roomId,Integer.toHexString(command),userId,response);
+    public void pushToUser(int command,Long userId, Response response,Long... roomIdParam) {
+        log.info("推送数据：roomId={} command={}  userId={}  response={}",roomIdParam,Integer.toHexString(command),userId,response);
         GameResponseMessage gameResponseMessage = new GameResponseMessage();
         GameResponseMessageHead head = new GameResponseMessageHead();
         Session session = sessionManager.getSession(userId);
@@ -61,9 +61,12 @@ public class PushManager implements IPushManager {
             throw new SystemException("构建响应对象失败：",e);
         }
 
-
-        //H2 待实现，推送事件只有一个disruptor，没有按房间区分，所以roomId传null
-        IProducerWithTranslator eventPublisher = DisruptorRegistrar.needEventPublisher(MessageType.PUSH_MESSAGE, null);
+        /*Long roomId;
+        if(roomIdParam.length > 0){
+            roomId = roomIdParam[0];
+        }*/
+        //推送事件，没有按房间区分，所以roomId传null
+        IProducerWithTranslator eventPublisher = DisruptorRegistrar.needEventPublisher(MessageType.PUSH_MESSAGE,null);
         try {
             if(!isOnline(userId)){
                 log.info("该玩家不在线，不予推送： userId={}",userId);
