@@ -61,12 +61,12 @@ public class PushManager implements IPushManager {
             throw new SystemException("构建响应对象失败：",e);
         }
 
-        /*Long roomId;
+        Long roomId = null;
         if(roomIdParam.length > 0){
             roomId = roomIdParam[0];
-        }*/
+        }
         //推送事件，没有按房间区分，所以roomId传null
-        IProducerWithTranslator eventPublisher = DisruptorRegistrar.needEventPublisher(MessageType.PUSH_MESSAGE,null);
+        IProducerWithTranslator eventPublisher = DisruptorRegistrar.needEventPublisher(MessageType.PUSH_MESSAGE,roomId);
         try {
             if(!isOnline(userId)){
                 log.info("该玩家不在线，不予推送： userId={}",userId);
