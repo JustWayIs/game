@@ -38,7 +38,7 @@ public class ReceiveMessageEventProducer implements IProducerWithTranslator<Game
         GameRequestMessageHead messageHead = gameRequestMessage.getHead();
         int cmd = messageHead.getCmd();
         MessageType messageType = null;
-        if(Objects.nonNull(messageHead.getType())){
+        if(Objects.nonNull(messageHead.getType()) && MessageType.TIMEOUT.getType() == messageHead.getType()){
             /**
              * 说明是超时自动生成的事件：实际而言上面的判断不是很合理，每一种业务类型的type应该都有值
              */

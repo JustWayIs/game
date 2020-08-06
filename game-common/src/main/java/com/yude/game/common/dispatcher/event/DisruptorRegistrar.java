@@ -42,7 +42,9 @@ public class DisruptorRegistrar implements IDisruptorRegistrar,ApplicationContex
      * roomId -> IProducerWithTranslator
      * 当从messageTypeMap获得了一个事件发布者之后，就把roomId与事件发布者建立绑定关系
      */
-    private static Map<Long, IProducerWithTranslator> roomTranslatorMap = new ConcurrentHashMap<>();
+    private static Map<Long, IProducerWithTranslator> receiveTranslatorMap = new ConcurrentHashMap<>();
+
+    private static Map<Long, IProducerWithTranslator> pushTranslatorMap = new ConcurrentHashMap<>();
 
 
     /**
@@ -56,12 +58,25 @@ public class DisruptorRegistrar implements IDisruptorRegistrar,ApplicationContex
         return publisher;
     }
 
+    private static Map<Long, IProducerWithTranslator> getMapByType(MessageType messageType){
+        /**
+         * 接收类型：GameRequestMessage
+         * 推送类型：GameResponseMessage
+         */
+        if(MessageType.PUSH_MESSAGE.equals(messageType)){
+            return pushTranslatorMap;
+        }
+        return receiveTranslatorMap;
+
+    }
+
     public static IProducerWithTranslator needEventPublisher(MessageType messageType, Long roomId){
         IProducerWithTranslator producerWithTranslator;
         /**
          * 游戏内的业务才会有roomId
          */
         if (roomId != null) {
+            Map<Long, IProducerWithTranslator> roomTranslatorMap = getMapByType(messageType);
             producerWithTranslator = roomTranslatorMap.get(roomId);
             if (producerWithTranslator == null) {
                 producerWithTranslator = messageTypeMap.get(messageType).getTranslatorByPolling();
