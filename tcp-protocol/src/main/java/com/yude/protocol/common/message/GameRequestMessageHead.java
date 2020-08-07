@@ -14,35 +14,14 @@ import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
 @ProtobufClass
 @EnableZigZap
 public class GameRequestMessageHead {
-    // ===========================================================
-    // Constants
-    // ===========================================================
-
-
-    // ===========================================================
-    // Fields
-    // ===========================================================
-    //H2 需要与客户端协调
     /**
      * 协议号
      */
     private int cmd;
     private Integer type;
     private String sessionId;
-    /**
-     * 客户端发送请求时的时间，由客户端发送
-     */
-    private long clientSendTime;
     private Long roomId;
 
-    // ===========================================================
-    // Constructors
-    // ===========================================================
-
-
-    // ===========================================================
-    // Getter &amp; Setter
-    // ===========================================================
 
     public int getCmd() {
         return cmd;
@@ -69,16 +48,6 @@ public class GameRequestMessageHead {
         this.sessionId = sessionId;
     }
 
-    public long getClientSendTime() {
-        return clientSendTime;
-    }
-
-    public void setClientSendTime(long clientSendTime) {
-        this.clientSendTime = clientSendTime;
-    }
-
-
-
     public Long getRoomId() {
         return roomId;
     }
@@ -88,14 +57,6 @@ public class GameRequestMessageHead {
     }
 
 
-    // ===========================================================
-    // Methods for/from SuperClass/Interfaces
-    // ===========================================================
-
-
-    // ===========================================================
-    // Methods
-    // ===========================================================
 
     @Override
     public String toString() {
@@ -103,13 +64,8 @@ public class GameRequestMessageHead {
                 "cmd=" + Integer.toHexString(cmd) +
                 ", type=" + type +
                 ", sessionId='" + sessionId + '\'' +
-                ", clientSendTime=" + clientSendTime +
                 ", roomId=" + roomId +
                 '}';
     }
 
-
-    // ===========================================================
-    // Inner and Anonymous Classes
-    // ===========================================================
 }

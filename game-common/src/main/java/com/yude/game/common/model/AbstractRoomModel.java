@@ -28,7 +28,7 @@ public abstract class AbstractRoomModel<T extends AbstractGameZoneModel, R exten
     protected IRoomManager roomManager;
 
     /**
-     * 用于标识打几轮，一轮打几局：似乎需要用减法来标识是否打完
+     * 用于标识第几轮，一轮打几局：似乎需要用减法来标识是否打完
      */
     protected int roundLimit;
     protected int inningLimit;

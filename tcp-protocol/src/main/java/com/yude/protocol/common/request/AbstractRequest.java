@@ -1,5 +1,7 @@
 package com.yude.protocol.common.request;
 
+import com.yude.protocol.common.MessageType;
+
 /**
  * @Author: HH
  * @Date: 2020/7/7 18:25
@@ -11,7 +13,7 @@ public abstract class AbstractRequest implements Request{
     protected Long channelUserId;
 
     //要做取消快速出牌的话，需要在业务层知道消息类型：是超时执行还是玩家手动执行，手动执行就重置 玩家连续超时计数器
-    //protected MessageType messageType;
+    protected MessageType messageType;
 
     @Override
     public Long getUserIdByChannel() {
@@ -31,10 +33,20 @@ public abstract class AbstractRequest implements Request{
         this.channelUserId = channelUserId;
     }
 
+    public MessageType getMessageType() {
+        return messageType;
+    }
+
+    public AbstractRequest setMessageType(MessageType messageType) {
+        this.messageType = messageType;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "AbstractRequest{" +
                 "channelUserId=" + channelUserId +
+                ", messageType=" + messageType +
                 '}';
     }
 }

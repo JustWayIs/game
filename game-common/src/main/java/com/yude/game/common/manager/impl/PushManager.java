@@ -49,9 +49,8 @@ public class PushManager implements IPushManager {
             return;
         }
         head.setCmd(command);
-        head.setUserId(userId);
         head.setSessionId(session.getSessionId());
-        //head.setType(type);
+
         gameResponseMessage.setHead(head);
         try {
             Any any = Any.pack(response);

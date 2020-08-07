@@ -29,6 +29,8 @@ import java.io.IOException;
 public class HeartBeatRespHandler extends ChannelInboundHandlerAdapter {
     private static final Logger log = LoggerFactory.getLogger(HeartBeatRespHandler.class);
 
+    private static GameResponseMessage heartBeatMessage;
+
     @Autowired
     private BaseHandler baseHandler;
 
@@ -42,8 +44,10 @@ public class HeartBeatRespHandler extends ChannelInboundHandlerAdapter {
         //if(head != null && head.getType() == MessageType.HEARTBEAT.value()){
         if(MessageType.HEARTBEAT.equals(type)){
             //log.debug("Receive ping message  --> ",head.getSessionId());
-            GameResponseMessage responseMessage = buildResponse(cmd,ctx);
-            ctx.writeAndFlush(responseMessage);
+            if(heartBeatMessage == null){
+                buildResponse(cmd,ctx);
+            }
+            ctx.writeAndFlush(heartBeatMessage);
             //log.debug("Send pong message to --> ",head.getSessionId());
             ReferenceCountUtil.release(msg);
             return;
@@ -52,20 +56,21 @@ public class HeartBeatRespHandler extends ChannelInboundHandlerAdapter {
     }
 
     private GameResponseMessage buildResponse(int cmd,ChannelHandlerContext context){
-        GameResponseMessage gameResponseMessage = new GameResponseMessage();
+        heartBeatMessage = new GameResponseMessage();
         GameResponseMessageHead head = new GameResponseMessageHead();
         head.setCmd(cmd);
-        head.setType(MessageType.HEARTBEAT.getType());
+        //用单例的心跳响应，就绝对不能再设置sessionId了
         //head.setSessionId(context.channel().attr(ISessionManager.SESSION_ID).get());
-        gameResponseMessage.setHead(head);
+
+        heartBeatMessage.setHead(head);
         HeartBeatResponse response = new HeartBeatResponse();
         try {
             Any any = Any.pack(response);
-            gameResponseMessage.setAny(any);
+            heartBeatMessage.setAny(any);
         } catch (IOException e) {
             log.error("构建响应对象失败：",e);
         }
-        return gameResponseMessage;
+        return heartBeatMessage;
     }
 
 }
