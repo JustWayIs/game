@@ -67,10 +67,10 @@ public class LoginRespHandler extends ChannelInboundHandlerAdapter {
         ctx.fireChannelRead(msg);
     }
 
+    static AtomicInteger activeCount = new AtomicInteger(0);
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-
-
+        log.debug("连接激活 当前激活数量：{}",activeCount.incrementAndGet());
         super.channelActive(ctx);
 
     }
@@ -78,8 +78,9 @@ public class LoginRespHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        log.debug("连接断开 当前激活数量：{}",activeCount.decrementAndGet());
         //服务器主动关闭触发,没有心跳机制的话，TCP服务器是不知道客户端断开了的。所以这个是在服务器的主动监测机制下被触发，并不是客户端一断开就被调用
-        log.info("{} 断开了连接 删除session:{}", ctx.channel().remoteAddress(), ctx.channel().attr(ISessionManager.SESSION_ID).get());
+        log.debug("{} 断开了连接 删除session:{}", ctx.channel().remoteAddress(), ctx.channel().attr(ISessionManager.SESSION_ID).get());
         sessionManager.removeSession(ctx.channel().attr(ISessionManager.USER_ID).get());
 
         super.channelInactive(ctx);

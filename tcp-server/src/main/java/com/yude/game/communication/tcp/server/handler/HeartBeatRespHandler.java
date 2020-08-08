@@ -29,7 +29,7 @@ import java.io.IOException;
 public class HeartBeatRespHandler extends ChannelInboundHandlerAdapter {
     private static final Logger log = LoggerFactory.getLogger(HeartBeatRespHandler.class);
 
-    private static GameResponseMessage heartBeatMessage;
+    private static volatile GameResponseMessage heartBeatMessage;
 
     @Autowired
     private BaseHandler baseHandler;
@@ -55,7 +55,10 @@ public class HeartBeatRespHandler extends ChannelInboundHandlerAdapter {
         ctx.fireChannelRead(msg);
     }
 
-    private GameResponseMessage buildResponse(int cmd,ChannelHandlerContext context){
+    private synchronized GameResponseMessage buildResponse(int cmd,ChannelHandlerContext context){
+        if(heartBeatMessage != null){
+            return heartBeatMessage;
+        }
         heartBeatMessage = new GameResponseMessage();
         GameResponseMessageHead head = new GameResponseMessageHead();
         head.setCmd(cmd);
