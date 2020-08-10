@@ -39,7 +39,7 @@ public class HeartBeatRespHandler extends ChannelInboundHandlerAdapter {
         GameRequestMessage requestMessage = (GameRequestMessage) msg;
         GameRequestMessageHead head = requestMessage.getHead();
         //心跳没有在Controller设置，所以不能用MessageType。如果需要做一定处理，还是需要Controller
-        int cmd = head.getCmd();
+        Integer cmd = head.getCmd();
         MessageType type = baseHandler.getMessageTypeByCommand(cmd);
         //if(head != null && head.getType() == MessageType.HEARTBEAT.value()){
         if(MessageType.HEARTBEAT.equals(type)){
@@ -55,7 +55,7 @@ public class HeartBeatRespHandler extends ChannelInboundHandlerAdapter {
         ctx.fireChannelRead(msg);
     }
 
-    private synchronized GameResponseMessage buildResponse(int cmd,ChannelHandlerContext context){
+    private synchronized GameResponseMessage buildResponse(Integer cmd,ChannelHandlerContext context){
         if(heartBeatMessage != null){
             return heartBeatMessage;
         }

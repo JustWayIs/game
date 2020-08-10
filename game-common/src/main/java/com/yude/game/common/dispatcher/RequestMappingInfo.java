@@ -61,7 +61,7 @@ public class RequestMappingInfo implements IRequestMappingInfo,ApplicationContex
                 if (annotation == null) {
                     continue;
                 }
-                int commandCode = annotation.value();
+                Integer commandCode = annotation.value();
                 if (methodMappingMap.get(commandCode) != null) {
                     StringBuilder sd = new StringBuilder();
                     sd.append("一个命令码不能绑定到多个方法,").append(annotation.value()).append(":");
@@ -73,27 +73,26 @@ public class RequestMappingInfo implements IRequestMappingInfo,ApplicationContex
                     throw new Exception(sd.toString());
                 }
 
-                int cmd = annotation.value();
                 MessageType messageType = annotation.messageType();
                 Object bean = applicationContext.getBean(curClass);
                 Class<? extends Request>[] parameterTypes = (Class<? extends Request>[]) method.getParameterTypes();
                 Class<? extends Response> returnType = (Class<? extends Response>) method.getReturnType();
 
                 HandlerMethod handlerMethod = new HandlerMethod();
-                handlerMethod.setCmd(cmd);
+                handlerMethod.setCmd(commandCode);
                 handlerMethod.setInstance(bean);
                 handlerMethod.setMethod(method);
                 handlerMethod.setParamTypes(parameterTypes);
                 handlerMethod.setReturnType(returnType);
                 handlerMethod.setMessageType(messageType);
-                methodMappingMap.put(cmd,handlerMethod);
+                methodMappingMap.put(commandCode,handlerMethod);
 
             }
         }
         log.info("------------------游戏接口加载完成：{}",methodMappingMap);
     }
 
-    public static HandlerMethod getHandlerMethodByCmd(int cmd) {
+    public static HandlerMethod getHandlerMethodByCmd(Integer cmd) {
         return methodMappingMap.get(cmd);
     }
 
@@ -103,7 +102,7 @@ public class RequestMappingInfo implements IRequestMappingInfo,ApplicationContex
     }
 
     @Override
-    public MessageType getMessageTypByCommand(int cmd) {
+    public MessageType getMessageTypByCommand(Integer cmd) {
         HandlerMethod handlerMethod = methodMappingMap.get(cmd);
         if(cmd == BaseCommandCode.HEART_BEAT){
             return MessageType.HEARTBEAT;

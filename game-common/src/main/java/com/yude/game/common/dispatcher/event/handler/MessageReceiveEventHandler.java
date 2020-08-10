@@ -50,7 +50,7 @@ public class MessageReceiveEventHandler implements EventHandler<MessageReceiveEv
             ChannelHandlerContext context = event.getContext();
             GameRequestMessage message = event.getMessage();
             GameRequestMessageHead messageHead = message.getHead();
-            int cmd = messageHead.getCmd();
+            Integer cmd = messageHead.getCmd();
             HandlerMethod handlerMethod = RequestMappingInfo.getHandlerMethodByCmd(cmd);
             if (handlerMethod == null) {
                 log.warn("不存在相应接口： cmd={}", Integer.toHexString(cmd));

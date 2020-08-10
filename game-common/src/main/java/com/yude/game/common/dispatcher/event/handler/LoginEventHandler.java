@@ -54,7 +54,7 @@ public class LoginEventHandler implements EventHandler<MessageReceiveEvent> ,Com
             log.debug("接收到登录事件：{}",event);
             GameRequestMessage message = event.getMessage();
             GameRequestMessageHead messageHead = message.getHead();
-            int cmd = messageHead.getCmd();
+            Integer cmd = messageHead.getCmd();
             HandlerMethod handlerMethod = RequestMappingInfo.getHandlerMethodByCmd(cmd);
             Method method = handlerMethod.getMethod();
             Object instance = handlerMethod.getInstance();

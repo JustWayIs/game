@@ -15,7 +15,7 @@ public class GameResponseMessageHead {
 
     private String sessionId;
 
-    private int cmd;
+    private Integer cmd;
 
     public String getSessionId() {
         return sessionId;
@@ -25,14 +25,14 @@ public class GameResponseMessageHead {
         this.sessionId = sessionId;
     }
 
-    public int getCmd() {
+    public Integer getCmd() {
         return cmd;
     }
 
-    public void setCmd(int cmd) {
+    public GameResponseMessageHead setCmd(Integer cmd) {
         this.cmd = cmd;
+        return this;
     }
-
 
     @Override
     public String toString() {

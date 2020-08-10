@@ -33,7 +33,7 @@ public class TcpCoreHandler extends ChannelInboundHandlerAdapter {
         try {
             GameRequestMessage requestMessage = (GameRequestMessage) msg;
             GameRequestMessageHead messageHead = requestMessage.getHead();
-            int cmd = messageHead.getCmd();
+            Integer cmd = messageHead.getCmd();
             MessageType messageType = baseHandler.getMessageTypeByCommand(cmd);
 
             log.info("Receive service message --> requestMessage = {}", requestMessage);

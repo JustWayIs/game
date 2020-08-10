@@ -17,18 +17,19 @@ public class GameRequestMessageHead {
     /**
      * 协议号
      */
-    private int cmd;
+    private Integer cmd;
     private Integer type;
     private String sessionId;
     private Long roomId;
 
 
-    public int getCmd() {
+    public Integer getCmd() {
         return cmd;
     }
 
-    public void setCmd(int cmd) {
+    public GameRequestMessageHead setCmd(Integer cmd) {
         this.cmd = cmd;
+        return this;
     }
 
     public Integer getType() {

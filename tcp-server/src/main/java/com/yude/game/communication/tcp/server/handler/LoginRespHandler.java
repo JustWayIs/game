@@ -41,7 +41,7 @@ public class LoginRespHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception{
         GameRequestMessage requestMessage = (GameRequestMessage) msg;
         GameRequestMessageHead messageHead = requestMessage.getHead();
-        int cmd = messageHead.getCmd();
+        Integer cmd = messageHead.getCmd();
         MessageType messageType  = baseHandler.getMessageTypeByCommand(cmd);
         //如果是登录业务:不应该有客户端发过来的type，应该由方法本身决定
         if (MessageType.LOGIN.equals(messageType)) {
@@ -78,7 +78,7 @@ public class LoginRespHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        log.debug("连接断开 当前激活数量：{}",activeCount.decrementAndGet());
+        log.warn("连接断开 当前激活数量：{}",activeCount.decrementAndGet());
         //服务器主动关闭触发,没有心跳机制的话，TCP服务器是不知道客户端断开了的。所以这个是在服务器的主动监测机制下被触发，并不是客户端一断开就被调用
         log.debug("{} 断开了连接 删除session:{}", ctx.channel().remoteAddress(), ctx.channel().attr(ISessionManager.SESSION_ID).get());
         sessionManager.removeSession(ctx.channel().attr(ISessionManager.USER_ID).get());

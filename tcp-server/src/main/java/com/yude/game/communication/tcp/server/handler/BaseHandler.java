@@ -24,7 +24,7 @@ public class BaseHandler {
     @Autowired
     private IRequestMappingInfo requestMappingInfo;
 
-    public MessageType getMessageTypeByCommand(int cmd){
+    public MessageType getMessageTypeByCommand(Integer cmd){
         return requestMappingInfo.getMessageTypByCommand(cmd);
     }
 

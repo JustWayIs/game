@@ -10,5 +10,5 @@ import com.yude.protocol.common.MessageType;
  */
 public interface IRequestMappingInfo {
 
-     MessageType getMessageTypByCommand(int cmd);
+     MessageType getMessageTypByCommand(Integer cmd);
 }

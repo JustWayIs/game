@@ -40,7 +40,7 @@ public class PushManager implements IPushManager {
 
 
     @Override
-    public void pushToUser(int command,Long userId, Response response,Long... roomIdParam) {
+    public void pushToUser(Integer command,Long userId, Response response,Long... roomIdParam) {
         log.info("推送数据：roomId={} command={}  userId={}  response={}",roomIdParam,Integer.toHexString(command),userId,response);
         GameResponseMessage gameResponseMessage = new GameResponseMessage();
         GameResponseMessageHead head = new GameResponseMessageHead();
@@ -80,7 +80,7 @@ public class PushManager implements IPushManager {
     }
 
     @Override
-    public void pushToUsers(int command,List<Long> userIds, Response response,Long... roomId) {
+    public void pushToUsers(Integer command,List<Long> userIds, Response response,Long... roomId) {
         for(Long userId : userIds){
             pushToUser(command,userId,response,roomId);
         }
@@ -101,7 +101,7 @@ public class PushManager implements IPushManager {
         return true;
     }
 
-    public static GameResponseMessage buildCommonResponse(int cmd, StatusCodeI status) {
+    public static GameResponseMessage buildCommonResponse(Integer cmd, StatusCodeI status) {
         GameResponseMessage responseMessage = new GameResponseMessage();
         GameResponseMessageHead responseMessageHead = new GameResponseMessageHead();
         responseMessageHead.setCmd(cmd);

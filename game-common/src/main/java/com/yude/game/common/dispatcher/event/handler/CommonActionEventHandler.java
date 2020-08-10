@@ -18,7 +18,7 @@ import java.util.Optional;
 public interface CommonActionEventHandler {
 
     default int buildAndPushCustomException(MessageReceiveEvent event, AbstractBaseException e){
-        int cmd = Optional.ofNullable(event).flatMap(messageReceiveEvent -> Optional.ofNullable(messageReceiveEvent.getMessage())).flatMap(message -> Optional.ofNullable(message.getHead())).map(head -> head.getCmd()).orElse(0);
+        Integer cmd = Optional.ofNullable(event).flatMap(messageReceiveEvent -> Optional.ofNullable(messageReceiveEvent.getMessage())).flatMap(message -> Optional.ofNullable(message.getHead())).map(head -> head.getCmd()).orElse(0);
         ChannelHandlerContext context = event.getContext();
         if(context != null){
             //超时任务为null

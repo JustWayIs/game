@@ -12,9 +12,9 @@ import java.util.List;
  */
 public interface IPushManager {
 
-    void pushToUser(int command,Long userId, Response response,Long... roomId);
+    void pushToUser(Integer command,Long userId, Response response,Long... roomId);
 
-    void pushToUsers(int command,List<Long> userIds, Response response,Long... roomId);
+    void pushToUsers(Integer command,List<Long> userIds, Response response,Long... roomId);
 
     List<Long> excludeUser(List<Long> userIds,Long excludeUserId);
 
