@@ -30,7 +30,7 @@ public class CommonTCPServer implements Runnable{
      * 根据运行状态调整到最优。使用@Value意味着必须传值。CPU核心数又是不确定的，该不该把这个值交由properties还有待商榷
      * CPU逻辑核心数x2实际上是个默认值
      */
-    private int workThreadNum = Runtime.getRuntime().availableProcessors() * 2;
+    private int workThreadNum = Runtime.getRuntime().availableProcessors();
     private ServerBootstrap serverBootstrap;
     private EventLoopGroup bossGroup;
     private EventLoopGroup workGroup;

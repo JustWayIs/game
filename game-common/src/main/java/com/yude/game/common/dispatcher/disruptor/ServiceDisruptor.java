@@ -56,7 +56,7 @@ public class ServiceDisruptor implements EventDisruptor {
          *
          * PhasedBackoffWaitStrategy ：上面多种策略的综合，CPU资源的占用少，延迟大。
          */
-        WaitStrategy waitStrategy = new SleepingWaitStrategy();
+        WaitStrategy waitStrategy = new YieldingWaitStrategy();
         for(int i = 0 ; i < disruptorNum ; ++i){
             Disruptor<MessageReceiveEvent> disruptor = new Disruptor<>(messageReceiveEventFactory,bufferSize,threadFactory, ProducerType.MULTI,waitStrategy);
 

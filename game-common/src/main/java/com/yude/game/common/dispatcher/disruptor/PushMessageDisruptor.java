@@ -44,7 +44,7 @@ public class PushMessageDisruptor implements EventDisruptor {
     @Override
     public DisruptorLoadBalance init() {
         DisruptorLoadBalance loadBalance = new DisruptorLoadBalance(new ArrayList<>());
-        WaitStrategy waitStrategy = new BlockingWaitStrategy();
+        WaitStrategy waitStrategy = new SleepingWaitStrategy();
         for(int i = 0 ; i < disruptorNum ; ++i){
             Disruptor<MessagePushEvent> disruptor = new Disruptor<>(messageEventFactory,bufferSize,threadFactory, ProducerType.MULTI,waitStrategy);
 
