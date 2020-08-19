@@ -35,9 +35,13 @@ public class TcpCoreHandler extends ChannelInboundHandlerAdapter {
             GameRequestMessageHead messageHead = requestMessage.getHead();
             Integer cmd = messageHead.getCmd();
             MessageType messageType = baseHandler.getMessageTypeByCommand(cmd);
-
+            if(messageType == null){
+                log.warn("无效的请求: command={}",Integer.toHexString(cmd));
+                return;
+            }
+            boolean canMultithreaded = baseHandler.canMultithreaded(cmd);
             log.info("Receive service message --> requestMessage = {}", requestMessage);
-            IProducerWithTranslator eventPublisher = baseHandler.getEventPublisher(messageType, messageHead.getRoomId());
+            IProducerWithTranslator eventPublisher = baseHandler.getEventPublisher(messageType, canMultithreaded ? null : messageHead.getRoomId());
             log.info("使用的事件发布器： roomId={}  publisher={}",messageHead.getRoomId(),eventPublisher);
             eventPublisher.publish(requestMessage, ctx);
 

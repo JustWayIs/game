@@ -5,7 +5,6 @@ import com.yude.game.communication.dispatcher.IProducerWithTranslator;
 import com.yude.game.communication.dispatcher.IRequestMappingInfo;
 import com.yude.protocol.common.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 /**
@@ -26,6 +25,10 @@ public class BaseHandler {
 
     public MessageType getMessageTypeByCommand(Integer cmd){
         return requestMappingInfo.getMessageTypByCommand(cmd);
+    }
+
+    public boolean canMultithreaded(Integer cmd){
+        return requestMappingInfo.canMultithreaded(cmd);
     }
 
     public IProducerWithTranslator getEventPublisher(MessageType messageType, Long roomId){

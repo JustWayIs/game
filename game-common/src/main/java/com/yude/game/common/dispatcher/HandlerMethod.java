@@ -27,6 +27,8 @@ public class HandlerMethod {
 
     private MessageType messageType;
 
+    private boolean canMultithreaded;
+
     public int getCmd() {
         return cmd;
     }
@@ -75,6 +77,15 @@ public class HandlerMethod {
         this.messageType = messageType;
     }
 
+    public boolean isCanMultithreaded() {
+        return canMultithreaded;
+    }
+
+    public HandlerMethod setCanMultithreaded(boolean canMultithreaded) {
+        this.canMultithreaded = canMultithreaded;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "HandlerMethod{" +
@@ -84,6 +95,7 @@ public class HandlerMethod {
                 ", paramTypes=" + Arrays.toString(paramTypes) +
                 ", returnType=" + returnType +
                 ", messageType=" + messageType +
+                ", canMultithreaded=" + canMultithreaded +
                 '}';
     }
 }

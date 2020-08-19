@@ -41,6 +41,10 @@ public class HeartBeatRespHandler extends ChannelInboundHandlerAdapter {
         //心跳没有在Controller设置，所以不能用MessageType。如果需要做一定处理，还是需要Controller
         Integer cmd = head.getCmd();
         MessageType type = baseHandler.getMessageTypeByCommand(cmd);
+        if(type == null){
+            log.warn("无效的请求: command={}",Integer.toHexString(cmd));
+            return;
+        }
         //if(head != null && head.getType() == MessageType.HEARTBEAT.value()){
         if(MessageType.HEARTBEAT.equals(type)){
             //log.debug("Receive ping message  --> ",head.getSessionId());

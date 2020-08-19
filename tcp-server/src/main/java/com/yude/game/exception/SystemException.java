@@ -1,4 +1,4 @@
-package com.yude.game.common.exception;
+package com.yude.game.exception;
 
 
 import com.yude.protocol.common.constant.StatusCodeI;
@@ -18,26 +18,26 @@ public class SystemException extends AbstractBaseException {
      */
     public SystemException(String errMessage){
         super(errMessage);
-        this.setErrorCode(StatusCodeEnum.FAIL);
+        setErrorCode(StatusCodeEnum.FAIL);
     }
 
     public SystemException(StatusCodeI statusCodeI){
         super(statusCodeI.msg());
-        this.setErrorCode(statusCodeI);
+        setErrorCode(statusCodeI);
     }
 
     public SystemException(StatusCodeI errCode, String errMessage) {
         super(errMessage);
-        this.setErrorCode(errCode);
+        setErrorCode(errCode);
     }
 
     public SystemException(String errMessage, Throwable e) {
         super(errMessage, e);
-        this.setErrorCode(StatusCodeEnum.FAIL);
+        setErrorCode(StatusCodeEnum.FAIL);
     }
 
     public SystemException(String errMessage, StatusCodeI errorCode, Throwable e) {
         super(errMessage, e);
-        this.setErrorCode(errorCode);
+        setErrorCode(errorCode);
     }
 }

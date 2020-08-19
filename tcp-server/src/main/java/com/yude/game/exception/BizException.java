@@ -1,4 +1,4 @@
-package com.yude.game.common.exception;
+package com.yude.game.exception;
 
 import com.yude.protocol.common.constant.StatusCodeI;
 import com.yude.protocol.common.constant.StatusCodeEnum;
@@ -13,21 +13,21 @@ public class BizException extends AbstractBaseException {
 
     public BizException(String errMessage){
         super(errMessage);
-        this.setErrorCode(StatusCodeEnum.FAIL);
+        setErrorCode(StatusCodeEnum.FAIL);
     }
 
     public BizException(StatusCodeI statusCodeI){
         super(statusCodeI.msg());
-        this.setErrorCode(statusCodeI);
+        setErrorCode(statusCodeI);
     }
 
     public BizException(String errMessage,StatusCodeI errCode){
         super(errMessage);
-        this.setErrorCode(errCode);
+        setErrorCode(errCode);
     }
 
     public BizException(String errMessage, Throwable e) {
         super(errMessage, e);
-        this.setErrorCode(StatusCodeEnum.FAIL);
+        setErrorCode(StatusCodeEnum.FAIL);
     }
 }

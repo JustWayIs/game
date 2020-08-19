@@ -1,10 +1,10 @@
 package com.yude.game.common.dispatcher;
 
 import cn.hutool.core.util.ClassUtil;
-import com.yude.game.communication.dispatcher.IRequestMappingInfo;
 import com.yude.game.common.command.BaseCommandCode;
 import com.yude.game.common.command.annotation.RequestCommand;
 import com.yude.game.common.command.annotation.RequestController;
+import com.yude.game.communication.dispatcher.IRequestMappingInfo;
 import com.yude.protocol.common.MessageType;
 import com.yude.protocol.common.request.Request;
 import com.yude.protocol.common.response.Response;
@@ -77,6 +77,7 @@ public class RequestMappingInfo implements IRequestMappingInfo,ApplicationContex
                 Object bean = applicationContext.getBean(curClass);
                 Class<? extends Request>[] parameterTypes = (Class<? extends Request>[]) method.getParameterTypes();
                 Class<? extends Response> returnType = (Class<? extends Response>) method.getReturnType();
+                boolean multithreaded = annotation.multithreaded();
 
                 HandlerMethod handlerMethod = new HandlerMethod();
                 handlerMethod.setCmd(commandCode);
@@ -85,6 +86,7 @@ public class RequestMappingInfo implements IRequestMappingInfo,ApplicationContex
                 handlerMethod.setParamTypes(parameterTypes);
                 handlerMethod.setReturnType(returnType);
                 handlerMethod.setMessageType(messageType);
+                handlerMethod.setCanMultithreaded(multithreaded);
                 methodMappingMap.put(commandCode,handlerMethod);
 
             }
@@ -104,12 +106,23 @@ public class RequestMappingInfo implements IRequestMappingInfo,ApplicationContex
     @Override
     public MessageType getMessageTypByCommand(Integer cmd) {
         HandlerMethod handlerMethod = methodMappingMap.get(cmd);
-        if(cmd == BaseCommandCode.HEART_BEAT){
+        if(cmd.equals(BaseCommandCode.HEART_BEAT)){
             return MessageType.HEARTBEAT;
         }
         if(handlerMethod != null){
            return handlerMethod.getMessageType();
         }
+        log.warn("该请求接口不存在：cmd = {}",Integer.toHexString(cmd));
         return null;
+    }
+
+    @Override
+    public boolean canMultithreaded(Integer cmd) {
+        HandlerMethod handlerMethod = methodMappingMap.get(cmd);
+        if(handlerMethod != null){
+            return handlerMethod.isCanMultithreaded();
+        }
+        log.warn("该请求接口不存在：cmd = {}",Integer.toHexString(cmd));
+        return false;
     }
 }

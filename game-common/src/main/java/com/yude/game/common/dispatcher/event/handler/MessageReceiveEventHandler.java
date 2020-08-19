@@ -2,14 +2,16 @@ package com.yude.game.common.dispatcher.event.handler;
 
 import com.baidu.bjf.remoting.protobuf.Any;
 import com.lmax.disruptor.EventHandler;
+import com.yude.game.common.command.BaseCommandCode;
 import com.yude.game.common.dispatcher.HandlerMethod;
-import com.yude.game.common.exception.BizException;
-import com.yude.game.common.manager.IPushManager;
 import com.yude.game.common.dispatcher.RequestMappingInfo;
 import com.yude.game.common.dispatcher.event.MessageReceiveEvent;
-import com.yude.game.common.exception.SystemException;
+import com.yude.game.common.manager.IPushManager;
 import com.yude.game.common.manager.impl.PushManager;
 import com.yude.game.common.manager.impl.SessionManager;
+import com.yude.game.communication.tcp.server.ServerChannelHandlerInitializer;
+import com.yude.game.exception.BizException;
+import com.yude.game.exception.SystemException;
 import com.yude.protocol.common.constant.StatusCodeEnum;
 import com.yude.protocol.common.message.GameRequestMessage;
 import com.yude.protocol.common.message.GameRequestMessageHead;
@@ -18,6 +20,7 @@ import com.yude.protocol.common.message.GameResponseMessageHead;
 import com.yude.protocol.common.request.Request;
 import com.yude.protocol.common.response.Response;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.timeout.IdleStateHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -63,15 +67,21 @@ public class MessageReceiveEventHandler implements EventHandler<MessageReceiveEv
             Class<? extends Request>[] paramTypes = handlerMethod.getParamTypes();
             Object result;
             Request request = null;
+            int length = paramTypes.length;
             // 考虑无参的情况
-            if (paramTypes.length > 0) {
+            if (length > 0) {
                 Class<? extends Request> requestType = paramTypes[0];
                  request = message.getObject().unpack(requestType);
                 //手动从channel里面取出userId设置到request里面 但是如果是超时操作，context是null
                 if (request.getUserIdByChannel() == null) {
                     request.setUserIdByChannel(context.channel().attr(SessionManager.USER_ID).get());
                 }
-                result = method.invoke(instance, request);
+                if(length == 1){
+                    result = method.invoke(instance, request);
+                }else {
+                    //先简单处理，第二个参数只能是：ChannelHandlerContext
+                    result = method.invoke(instance, request,context);
+                }
             } else {
                 result = method.invoke(instance);
             }
@@ -79,6 +89,14 @@ public class MessageReceiveEventHandler implements EventHandler<MessageReceiveEv
             if (result instanceof Response) {
                 log.debug("请求直接响应：{}",result);
                 Response response = (Response) result;
+
+                if (cmd.equals(BaseCommandCode.LOGIN) && response.isSuccess()) {
+
+                    log.info("用户验证成功，添加超时handler : userId={}",context.channel().attr(SessionManager.USER_ID).get());
+                    //心跳机制应该在登录校验完成后才有意义 -> 在这里加的话，得加到管道头部，否则不生效
+                    context.pipeline().addFirst("read-time-out",new IdleStateHandler(0,0, ServerChannelHandlerInitializer.TIME_OUT * 3, TimeUnit.SECONDS));
+                    log.debug("------------pipeline: {}  ",context.pipeline());
+                }
 
                 GameResponseMessage responseMessage = new GameResponseMessage();
                 GameResponseMessageHead responseMessageHead = new GameResponseMessageHead();
@@ -125,7 +143,7 @@ public class MessageReceiveEventHandler implements EventHandler<MessageReceiveEv
                 }
                 return;
             }
-            log.error("意料之外的反射异常：{}",e);
+            log.error("意料之外的反射异常：",e);
         }catch (Exception e) {
             log.error("业务异常: {}",event, e);
         } catch (Throwable e) {

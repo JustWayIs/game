@@ -1,5 +1,6 @@
 package com.yude.game.communication.dispatcher;
 
+import com.yude.game.exception.BizException;
 import com.yude.protocol.common.MessageType;
 
 /**
@@ -10,5 +11,7 @@ import com.yude.protocol.common.MessageType;
  */
 public interface IRequestMappingInfo {
 
-     MessageType getMessageTypByCommand(Integer cmd);
+     MessageType getMessageTypByCommand(Integer cmd) throws BizException;
+
+     boolean canMultithreaded(Integer cmd) throws BizException;
 }

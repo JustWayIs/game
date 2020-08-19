@@ -2,7 +2,7 @@ package com.yude.game.common.manager.impl;
 
 import com.baidu.bjf.remoting.protobuf.Any;
 import com.yude.game.common.dispatcher.event.DisruptorRegistrar;
-import com.yude.game.common.exception.SystemException;
+import com.yude.game.exception.SystemException;
 import com.yude.game.common.manager.IPushManager;
 import com.yude.game.communication.dispatcher.IProducerWithTranslator;
 import com.yude.game.communication.tcp.server.session.ISessionManager;

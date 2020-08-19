@@ -38,12 +38,17 @@ public class LoginRespHandler extends ChannelInboundHandlerAdapter {
     private ISessionManager sessionManager;
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception{
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         GameRequestMessage requestMessage = (GameRequestMessage) msg;
         GameRequestMessageHead messageHead = requestMessage.getHead();
         Integer cmd = messageHead.getCmd();
         MessageType messageType  = baseHandler.getMessageTypeByCommand(cmd);
+        if(messageType == null){
+            log.warn("无效的请求: command={}",Integer.toHexString(cmd));
+            return;
+        }
         //如果是登录业务:不应该有客户端发过来的type，应该由方法本身决定
+        //其实登录不应该用单独的线程来做，应该使用业务线程
         if (MessageType.LOGIN.equals(messageType)) {
             log.info("Receive login message --> cmd = {}", Integer.toHexString(messageHead.getCmd()));
 
@@ -70,7 +75,7 @@ public class LoginRespHandler extends ChannelInboundHandlerAdapter {
     static AtomicInteger activeCount = new AtomicInteger(0);
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        log.debug("连接激活 当前激活数量：{}",activeCount.incrementAndGet());
+        log.debug("连接激活 当前激活数量：{}", activeCount.incrementAndGet());
         super.channelActive(ctx);
 
     }

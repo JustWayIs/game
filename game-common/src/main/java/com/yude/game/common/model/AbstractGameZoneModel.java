@@ -1,7 +1,7 @@
 package com.yude.game.common.model;
 
 import com.yude.game.common.constant.Status;
-import com.yude.game.common.exception.BizException;
+import com.yude.game.exception.BizException;
 
 /**
  * @Author: HH

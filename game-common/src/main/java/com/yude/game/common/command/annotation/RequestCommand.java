@@ -28,4 +28,10 @@ public @interface RequestCommand {
      * @return
      */
     MessageType messageType() default MessageType.SERVICE;
+
+    /**
+     * 是否支持多线程：用于细化接口
+     * @return
+     */
+    boolean multithreaded() default false;
 }

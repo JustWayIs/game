@@ -1,10 +1,10 @@
-package com.yude.game.common.exception;
+package com.yude.game.exception;
 
 import com.yude.protocol.common.constant.StatusCodeI;
 
 /**
  * @Author: HH
- * @Date: 2020/6/29 18:23
+ * @Date: 2020/8/18 21:02
  * @Version: 1.0
  * @Declare:
  */

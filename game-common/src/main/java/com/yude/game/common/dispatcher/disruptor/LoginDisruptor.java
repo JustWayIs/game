@@ -1,22 +1,8 @@
 package com.yude.game.common.dispatcher.disruptor;
 
-import com.lmax.disruptor.*;
-import com.lmax.disruptor.dsl.Disruptor;
-import com.lmax.disruptor.dsl.ProducerType;
 import com.yude.game.common.dispatcher.event.DisruptorLoadBalance;
-import com.yude.game.common.dispatcher.event.MessageReceiveEvent;
-import com.yude.game.common.dispatcher.event.factory.threadFactory.CustomDisruptorThreadFactory;
-import com.yude.game.common.dispatcher.event.translator.ReceiveMessageEventProducer;
-import com.yude.game.communication.dispatcher.IProducerWithTranslator;
 import com.yude.protocol.common.MessageType;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
-
-
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.concurrent.ThreadFactory;
 
 /**
  * @Author: HH
@@ -25,31 +11,33 @@ import java.util.concurrent.ThreadFactory;
  * @Declare:
  */
 @Component
-@PropertySource("classpath:config/core.properties")
+//@PropertySource("classpath:config/core.properties")
 public class LoginDisruptor implements EventDisruptor {
-    @Value("${disruptor.size.login:1}")
+    /*@Value("${disruptor.size.login:1}")
     private final int disruptorNum = 1;
 
     @Value("${disruptor.bufferSize.login:1024}")
     private final int bufferSize = 2 << 13;
 
-    /*@Autowired()
-    @Qualifier("messageReceiveEventHandler")*/
+    *//*@Autowired()
+    @Qualifier("messageReceiveEventHandler")*//*
     @Resource(name="loginEventHandler")
     private EventHandler messageEventHandler;
 
 
-    /*@Autowired
-    @Qualifier("messageReceiveEventFactory")*/
+    *//*@Autowired
+    @Qualifier("messageReceiveEventFactory")*//*
     @Resource(name="messageReceiveEventFactory")
     private EventFactory messageReceiveEventFactory;
 
-    private final ThreadFactory threadFactory = CustomDisruptorThreadFactory.LOGIN;
+    private final ThreadFactory threadFactory = CustomDisruptorThreadFactory.LOGIN;*/
 
     //还有一种实现方式,在接口层添加 get 上面所有属性的方法，然后传参进接口的init，在接口层做实现
     @Override
     public DisruptorLoadBalance init() {
-        DisruptorLoadBalance loadBalance = new DisruptorLoadBalance(new ArrayList<>());
+        return null;
+
+        /*DisruptorLoadBalance loadBalance = new DisruptorLoadBalance(new ArrayList<>());
         WaitStrategy waitStrategy = new BlockingWaitStrategy();
         for(int i = 0 ; i < disruptorNum ; ++i){
             Disruptor<MessageReceiveEvent> disruptor = new Disruptor<>(messageReceiveEventFactory,bufferSize,threadFactory, ProducerType.MULTI,waitStrategy);
@@ -62,7 +50,7 @@ public class LoginDisruptor implements EventDisruptor {
             loadBalance.addTranslator(producerWithTranslator);
 
         }
-        return loadBalance;
+        return loadBalance;*/
     }
 
     @Override

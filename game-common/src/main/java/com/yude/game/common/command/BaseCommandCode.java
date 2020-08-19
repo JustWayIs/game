@@ -12,4 +12,9 @@ public interface BaseCommandCode {
      */
     int HEART_BEAT = 0x1000;
 
+    /**
+     * 登录
+     */
+    int LOGIN = 0x1001;
+
 }
