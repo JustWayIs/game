@@ -26,6 +26,11 @@ public abstract class AbstractGameZoneModel<T extends AbstractSeatModel,S extend
 
     protected S gameStatus;
 
+    /**
+     * 超时机制
+     */
+    protected volatile long lastOperationTime;
+
     public AbstractGameZoneModel(T[] playerSeats,int round,int inning) {
         this.playerSeats = playerSeats;
         this.round = round;
@@ -68,5 +73,13 @@ public abstract class AbstractGameZoneModel<T extends AbstractSeatModel,S extend
 
     public S getGameStatus(){
         return gameStatus;
+    }
+
+    public void stepAdd() {
+        stepCount++;
+    }
+
+    public long getLastOperationTime() {
+        return lastOperationTime;
     }
 }
