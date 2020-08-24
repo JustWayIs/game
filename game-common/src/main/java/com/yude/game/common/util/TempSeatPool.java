@@ -1,5 +1,7 @@
 package com.yude.game.common.util;
 
+import com.yude.game.exception.SystemException;
+
 import java.util.LinkedList;
 
 /**
@@ -10,27 +12,42 @@ import java.util.LinkedList;
  */
 public enum TempSeatPool {
     /**
-     * 单例
+     * 几人游戏
      */
-    INSTANCE;
+    TOW_PLAYER(2),
+    THREE_PLAYER(3),
+    FOUR_PLAYER(4),
+    FIVE_PLAYER(5),
+    SIX_PLAYER(6),
+    SEVEN_PLAYER(7),
+    EIGHT_PLAYER(8);
 
+    public int playerNum;
 
     private volatile LinkedList<AtomicSeatDown> tempSeats = new LinkedList<>();
 
-    {
-        AtomicSeatDown last = new AtomicSeatDown(3);
+
+    TempSeatPool(int playerNum) {
+        this.playerNum = playerNum;
+        AtomicSeatDown last = new AtomicSeatDown(playerNum);
         tempSeats.addLast(last);
     }
 
-    public static TempSeatPool getInstance() {
-        return INSTANCE;
+    public static TempSeatPool matchPlayerInstance(int playerNum){
+        for(TempSeatPool tempSeat : TempSeatPool.values()){
+            if(tempSeat.playerNum == playerNum){
+                return tempSeat;
+            }
+        }
+        throw new SystemException("没有可以匹配对应人数的临时区: "+playerNum);
     }
+
 
     //创建房间从头开始拿，匹配从尾开始拿
     public synchronized AtomicSeatDown getAtomicSeatDownInstanceToMatch() {
         AtomicSeatDown last = tempSeats.getLast();
         if (last.canStartGame()) {
-            AtomicSeatDown newLast = new AtomicSeatDown(3);
+            AtomicSeatDown newLast = new AtomicSeatDown(this.playerNum);
             tempSeats.addLast(newLast);
             last = newLast;
         }
@@ -39,7 +56,7 @@ public enum TempSeatPool {
 
     public synchronized void removeTempSeat(AtomicSeatDown seatDown) {
         tempSeats.remove(seatDown);
-        AtomicSeatDown newLast = new AtomicSeatDown(3);
+        AtomicSeatDown newLast = new AtomicSeatDown(this.playerNum);
         tempSeats.addLast(newLast);
     }
 
