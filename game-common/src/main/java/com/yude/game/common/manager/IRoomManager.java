@@ -26,7 +26,11 @@ public interface IRoomManager<R extends AbstractRoomModel> {
 
     R getRoomByUserId(Long userId);
 
-    IPushManager getPushManager();
+    /**
+     * 实在有必要再用吧
+     * @return
+     */
+    default IPushManager getPushManager(){return null;};
 
     /**
      * getPushManager没有存在的必要性，应该对调用方屏蔽IPushManager的存在
