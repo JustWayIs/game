@@ -64,10 +64,11 @@ public class RequestMappingInfo implements IRequestMappingInfo,ApplicationContex
                 Integer commandCode = annotation.value();
                 if (methodMappingMap.get(commandCode) != null) {
                     StringBuilder sd = new StringBuilder();
-                    sd.append("一个命令码不能绑定到多个方法,").append(annotation.value()).append(":");
-                    sd.append(curClass.getClass());
+                    sd.append("一个命令码不能绑定到多个方法:").append(commandCode).append(" -> ");
+                    sd.append(curClass);
                     sd.append("#").append(method.getName());
-                    sd.append(" ,  ").append(methodMappingMap.get(annotation.value()).getMethod().getDeclaringClass());
+                    Method alreadyMethod = methodMappingMap.get(commandCode).getMethod();
+                    sd.append(" <-> ").append(alreadyMethod.getDeclaringClass()).append("#"+alreadyMethod.getName());
                     /*sd.append("#").append(methodMappingMap.get(annotation.value()).getClass());*/
                     log.error(sd.toString());
                     throw new Exception(sd.toString());
