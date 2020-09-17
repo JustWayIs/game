@@ -2,12 +2,14 @@ package com.yude.game.communication.tcp.server.handler;
 
 
 import com.yude.game.communication.dispatcher.IProducerWithTranslator;
+import com.yude.game.communication.tcp.server.session.ISessionManager;
 import com.yude.protocol.common.MessageType;
 import com.yude.protocol.common.message.GameRequestMessage;
 import com.yude.protocol.common.message.GameRequestMessageHead;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.timeout.ReadTimeoutException;
 import io.netty.util.ReferenceCountUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +29,9 @@ public class TcpCoreHandler extends ChannelInboundHandlerAdapter {
 
     @Autowired
     private BaseHandler baseHandler;
+
+    @Autowired
+    private ISessionManager sessionManager;
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -61,6 +66,15 @@ public class TcpCoreHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        log.error("业务流程中发生了异常事件：", cause);
+        /**
+         * 不能直接传递异常，loginResHandler只能处理前面的，而这里的传递不到LoginResHandler
+         * 因为netty会把出异常的客户端连接个断开,所以这里需要删除用户session，让session和channel保持一致
+         */
+        if (cause instanceof ReadTimeoutException) {
+            sessionManager.removeSession(ctx.channel().attr(ISessionManager.USER_ID).get());
+            return;
+        }
         super.exceptionCaught(ctx, cause);
     }
 
